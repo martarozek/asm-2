@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TESTS=(1 2 3 4 5 6)
+TESTS=(1 2 3 4 5 6 7 8)
 
 TESTS_PATH=/home/mrozek/asm/zad2_sse/test
 EXEC=/home/mrozek/asm/zad2_sse/flow

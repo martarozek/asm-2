@@ -180,8 +180,8 @@ c_l2:
         cmp     r8, 4
         jl      c_man
 
-        movaps  xmm1, [rsi + rax*4]
-        movaps  [rdi + rax*4], xmm1
+        movups  xmm1, [rsi + rax*4]
+        movups  [rdi + rax*4], xmm1
 
         add     edx, 4          ; loop 2, by four
         cmp     edx, [w]

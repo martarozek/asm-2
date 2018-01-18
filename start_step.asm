@@ -29,7 +29,7 @@ step:
 
         call    evolve
         call    move_T
-        call    copy
+        call    swap
 
         ret
 
@@ -48,6 +48,7 @@ e_l2:
         call    getpos
         mov     r8, rax
 
+        call    copy
         call    up_down
         call    remainder
 
@@ -164,45 +165,27 @@ m_l1:
         ret
 
 
-;; copy all values from M2 to M1 - to be used after a step
+;; copy a value from M1 to M2, before evolving, pos: r8
 copy:
         mov     rdi, [M1]       ; M1 base address
         mov     rsi, [M2]       ; M2 base address
 
-        xor     rcx, rcx        ; loop counter (y)
-c_l1:
-        xor     rdx, rdx        ; loop counter (x)
-c_l2:
-        call    getpos
-
-        mov     r8d, [w]
-        sub     r8, rdx
-        cmp     r8, 4
-        jl      c_man
-
-        movups  xmm1, [rsi + rax*4]
-        movups  [rdi + rax*4], xmm1
-
-        add     edx, 4          ; loop 2, by four
-        cmp     edx, [w]
-        jl      c_l2
-
-        jmp     c_l2_inc
-
-c_man:
-        movss   xmm1, [rsi + rax*4]
-        movss   [rdi + rax*4], xmm1
-
-        inc     edx             ; loop 2, by one
-        cmp     edx, [w]
-        jl      c_l2
-
-c_l2_inc:
-        inc     ecx             ; loop 1
-        cmp     ecx, [h]
-        jl      c_l1
+        movss   xmm1, [rdi + rax*4]
+        movss   [rsi + rax*4], xmm1
 
         ret
+
+
+;; swap addresses of M1 and M2
+swap:
+        mov     rdi, [M1]
+        mov     rsi, [M2]
+
+        mov     [M1], rsi
+        mov     [M2], rdi
+
+        ret
+
 
 ;; y in ecx, x in edx, result in eax
 getpos:

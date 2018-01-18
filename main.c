@@ -11,10 +11,13 @@ struct matrix {
     int h;
 } __attribute__((__packed__));
 
-void print(struct matrix M) {
+void print(struct matrix M, int step) {
     for (int y = 0; y < M.h; ++y) {
         for (int x = 0; x < M.w; ++x) {
-            printf("%.2f ", M._1[M.w*y + x]);
+            if (step % 2)
+                printf("%.2f ", M._1[M.w*y + x]);
+            else
+                printf("%.2f ", M._2[M.w*y + x]);
         }
         printf("\n");
     }
@@ -47,7 +50,6 @@ int main() {
         for (int x = 0; x < M.w; ++x) {
             scanf("%f", &f);
             M._1[M.w*y + x] = f;
-            M._2[M.w*y + x] = f;
         }
 
     int steps = 0;
@@ -63,7 +65,7 @@ int main() {
         }
 
         step(T);
-        print(M);
+        print(M, i);
     }
 
     free(M._1);
